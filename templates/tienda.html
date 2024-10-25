@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>PUMA</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <!-- Puedes enlazar tu propio archivo de estilos aquí -->
+  </head>
+  <body>
+    <header>
+      <!-- Sección de foto de perfil y título -->
+      <div class="div_foto_perfil">
+        <img
+          src="{{ url_for('static', filename='img/vecteezy_puma-transparent-png-puma-free-png_19909585.png') }}"
+          alt="Logo de adidas"
+        />
+      </div>
+    </header>
+
+    <main>
+      <div id="cargando">Cargando productos...</div>
+      <div id="productos"></div>
+    </main>
+
+    <!-- Modal para mostrar el carrusel de imágenes -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="carrusel" class="carrusel"></div>
+      </div>
+    </div>
+    <!-- Modal para WhatsApp -->
+    <div id="whatsappModal" class="modal">
+      <div class="modal-content">
+        <span id="closeWhatsappModal" class="close">&times;</span>
+        <h2>CONTACTAR POR WHATSAPP</h2>
+        <form id="whatsappForm">
+          <label for="nombre">Nombre completo:</label>
+          <input type="text" id="nombre" required />
+
+          <label for="telefono">Teléfono:</label>
+          <input type="tel" id="telefono" required />
+
+          <label for="direccion">Dirección:</label>
+          <input type="text" id="direccion" required />
+
+          <button type="submit" class="btn-pago">Enviar</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/static/tienda.js"></script>
+    <!-- Enlace a tu script de JavaScript -->
+  </body>
+</html>
