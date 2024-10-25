@@ -1,4 +1,4 @@
-let url = "http://127.0.0.1:5000/puma"; // Cambiar el endpoint a productos
+let url = "https://tiendapuma.onrender.com/puma"; // Cambiar el endpoint a productos
 let cargando = document.getElementById("cargando");
 
 // Función para ordenar los productos según su precio (de menor a mayor)
