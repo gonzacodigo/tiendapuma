@@ -116,10 +116,16 @@ def obtener_productos_puma():
         productos_article = soup_producto.find_all('div', class_='css-10olt1g')
 
         imagenes_producto = []
+        talles = []
+        
         if productos_article:
             for article in productos_article:
                 imgs = article.find_all('img', class_="chakra-image css-0")
                 imagenes_producto.extend([img['src'] for img in imgs if 'src' in img.attrs])
+                # Talles
+                p_talles = article.find_all("a", attrs={"data-testid": "sf-sizetile"})
+                talles.extend([a['aria-label'] for a in p_talles if 'aria-label' in a.attrs])
+                
 
         if title:
             resultado.append({
@@ -129,7 +135,8 @@ def obtener_productos_puma():
                 'price_original': price_original.text.strip() if price_original else None,
                 'img': imagen_url,
                 'imagenes_producto': imagenes_producto,
-                'link_href': link_href
+                'link_href': link_href,
+                'talles': talles
             })
 
     # Guardar los datos en la caché con el tiempo actual

@@ -120,8 +120,24 @@ header {
     transition: background-color 0.3s ease-in-out;
     margin: 8px 0px;
 }
+.btn-acordeon{
+    width: 100%;
+
+    background-color: #fefefe;
+    color: #333;
+    padding: 12px 25px;
+    border: solid #333 1px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin: 8px 0px;
+
+}
 
 .btn-whatsapp:hover {
+    background-color: #ffcf33;
+}
+.btn-acordeon:hover {
     background-color: #ffcf33;
 }
 

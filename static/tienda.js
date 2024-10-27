@@ -4,25 +4,29 @@ let cargando = document.getElementById("cargando");
 // Función para ordenar los productos según su precio (de menor a mayor)
 function ordenarProductosPorPrecio(productos) {
   return productos.sort((a, b) => {
-    let precioA = parseFloat(a.price.replace("$", "").replace(/\./g, "").replace(",", "."));
-    let precioB = parseFloat(b.price.replace("$", "").replace(/\./g, "").replace(",", "."));
+    let precioA = parseFloat(
+      a.price.replace("$", "").replace(/\./g, "").replace(",", ".")
+    );
+    let precioB = parseFloat(
+      b.price.replace("$", "").replace(/\./g, "").replace(",", ".")
+    );
     return precioA - precioB;
   });
 }
 
 function getProductos() {
   fetch(url)
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok for productos");
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       let productosOrdenados = ordenarProductosPorPrecio(data);
       getProductosHTML(productosOrdenados);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error al obtener los productos:", error);
       if (cargando) {
         cargando.textContent = "Error al cargar los productos.";
@@ -47,7 +51,7 @@ function getProductosHTML(productos) {
   // Usar un fragmento de documento para optimizar la inserción masiva en el DOM
   let fragment = document.createDocumentFragment();
 
-  productos.forEach(producto => {
+  productos.forEach((producto) => {
     let productoDiv = document.createElement("div");
     productoDiv.classList.add("producto");
 
@@ -103,18 +107,20 @@ function getProductosHTML(productos) {
         },
         body: JSON.stringify({ title: producto.title }),
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error("Error al crear la preferencia de pago.");
           }
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           window.location.href = data.init_point;
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Error al crear la preferencia de pago:", error);
-          alert("Hubo un error al intentar procesar el pago. Inténtalo nuevamente.");
+          alert(
+            "Hubo un error al intentar procesar el pago. Inténtalo nuevamente."
+          );
         });
     });
 
@@ -129,6 +135,37 @@ function getProductosHTML(productos) {
         .setAttribute("data-product-title", producto.title);
 
       document.getElementById("whatsappModal").style.display = "block";
+    });
+    // Botón para mostrar talles
+    let acordeonButton = document.createElement("button");
+    acordeonButton.textContent = "Ver Talles";
+    acordeonButton.classList.add("btn-acordeon");
+
+    // Contenedor para los talles
+    let tallesDiv = document.createElement("div");
+    tallesDiv.classList.add("talles-content");
+    tallesDiv.style.display = "none"; // Oculto por defecto
+
+    // Llenar los talles, asumiendo que los talles están en producto.talles
+    if (producto.talles && producto.talles.length > 0) {
+      producto.talles.forEach((talle) => {
+        let talleElement = document.createElement("p");
+        talleElement.textContent = talle;
+        tallesDiv.appendChild(talleElement);
+      });
+    } else {
+      let noTalles = document.createElement("p");
+      noTalles.textContent = "No hay talles disponibles.";
+      tallesDiv.appendChild(noTalles);
+    }
+
+    // Toggle de acordeón
+    acordeonButton.addEventListener("click", function () {
+      if (tallesDiv.style.display === "none") {
+        tallesDiv.style.display = "block";
+      } else {
+        tallesDiv.style.display = "none";
+      }
     });
 
     productoDiv.appendChild(title);
@@ -147,6 +184,10 @@ function getProductosHTML(productos) {
     botonesDiv.appendChild(verImagenesButton);
     botonesDiv.appendChild(whatsappButton);
     botonesDiv.appendChild(pagarButton);
+    // Añadir los botones y el acordeón al div de botones
+    botonesDiv.appendChild(acordeonButton); // Botón de talles dentro de botonesDiv
+    botonesDiv.appendChild(tallesDiv); // Añadir el div de talles al botonesDiv
+
     productoDiv.appendChild(botonesDiv);
 
     fragment.appendChild(productoDiv);
@@ -162,7 +203,7 @@ function mostrarCarrusel(imagenes) {
 
   carruselDiv.innerHTML = "";
 
-  imagenes.forEach(imagenUrl => {
+  imagenes.forEach((imagenUrl) => {
     let imgElement = document.createElement("img");
     imgElement.src = imagenUrl;
     imgElement.loading = "lazy"; // Lazy loading para carrusel
@@ -183,24 +224,28 @@ document.getElementById("closeWhatsappModal").onclick = function () {
 };
 
 // Enviar formulario de WhatsApp
-document.getElementById("whatsappForm").addEventListener("submit", function (event) {
-  event.preventDefault();
+document
+  .getElementById("whatsappForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  let nombreCompleto = document.getElementById("nombre").value;
-  let telefono = document.getElementById("telefono").value;
-  let direccion = document.getElementById("direccion").value;
+    let nombreCompleto = document.getElementById("nombre").value;
+    let telefono = document.getElementById("telefono").value;
+    let direccion = document.getElementById("direccion").value;
 
-  let productoTitle = document
-    .getElementById("whatsappModal")
-    .getAttribute("data-product-title");
+    let productoTitle = document
+      .getElementById("whatsappModal")
+      .getAttribute("data-product-title");
 
-  let mensaje = `Hola, mi nombre es ${nombreCompleto}. Estoy interesado en el producto "${productoTitle}". Mis datos de contacto son:\nTeléfono: ${telefono}\nDirección: ${direccion}`;
+    let mensaje = `Hola, mi nombre es ${nombreCompleto}. Estoy interesado en el producto "${productoTitle}". Mis datos de contacto son:\nTeléfono: ${telefono}\nDirección: ${direccion}`;
 
-  let whatsappURL = `https://wa.me/5491128470107?text=${encodeURIComponent(mensaje)}`;
-  window.open(whatsappURL, "_blank");
+    let whatsappURL = `https://wa.me/5491128470107?text=${encodeURIComponent(
+      mensaje
+    )}`;
+    window.open(whatsappURL, "_blank");
 
-  document.getElementById("whatsappModal").style.display = "none";
-});
+    document.getElementById("whatsappModal").style.display = "none";
+  });
 
 // Cargar productos al cargar la página
 document.addEventListener("DOMContentLoaded", getProductos);
