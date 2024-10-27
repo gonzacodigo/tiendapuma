@@ -11,15 +11,13 @@
     />
     <title>PUMA</title>
     <link rel="stylesheet" href="/static/style.css" />
-    <!-- Puedes enlazar tu propio archivo de estilos aquí -->
   </head>
   <body>
     <header>
-      <!-- Sección de foto de perfil y título -->
       <div class="div_foto_perfil">
         <img
           src="{{ url_for('static', filename='img/vecteezy_puma-transparent-png-puma-free-png_19909585.png') }}"
-          alt="Logo de adidas"
+          alt="Logo de Puma"
         />
       </div>
     </header>
@@ -29,7 +27,7 @@
       <div id="productos"></div>
     </main>
 
-    <!-- Modal para mostrar el carrusel de imágenes -->
+    <!-- Modal para el carrusel de imágenes -->
     <div id="modal" class="modal">
       <div class="modal-content">
         <span id="closeModal" class="close">&times;</span>
@@ -57,6 +55,5 @@
     </div>
 
     <script src="/static/tienda.js"></script>
-    <!-- Enlace a tu script de JavaScript -->
   </body>
 </html>

@@ -6,10 +6,15 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import os
+import time
 
 app = Flask(__name__)
 CORS(app)  # Habilitar CORS para todas las rutas
 session = requests.Session()  # Reutilizar la sesión HTTP
+
+# Configuración de caché en memoria
+cache = {}
+CACHE_DURATION = 300  # Duración de la caché en segundos (5 minutos)
 
 @app.route('/')
 def index():
@@ -20,9 +25,7 @@ def static_files(filename):
     return send_from_directory('static', filename)
 
 # Inicializar Mercado Pago con tu Access Token
-sdk = mercadopago.SDK(
-    "APP_USR-6353271101230954-091923-0134b8d1466acc7784abaf1dbce6cc7d-411256757"
-)
+sdk = mercadopago.SDK("APP_USR-6353271101230954-091923-0134b8d1466acc7784abaf1dbce6cc7d-411256757")
 
 @app.route('/pago/<float:precio>', methods=['POST'])
 def crear_pago(precio):
@@ -36,7 +39,7 @@ def crear_pago(precio):
                     "title": item_title,
                     "quantity": 1,
                     "currency_id": "ARS",
-                    "unit_price": precio
+                    "unit_price": round(precio, 2) * 1000
                 }
             ],
             "back_urls": {
@@ -60,6 +63,10 @@ def crear_pago(precio):
 
 @app.route('/puma', methods=['GET'])
 def obtener_productos_puma():
+    # Revisar si los datos están en caché y no han expirado
+    if 'puma_data' in cache and (time.time() - cache['puma_data']['timestamp'] < CACHE_DURATION):
+        return jsonify(cache['puma_data']['data'])
+
     url = "https://ar.puma.com/outlet"
 
     try:
@@ -83,14 +90,11 @@ def obtener_productos_puma():
         link_href = producto['href'] if 'href' in producto.attrs else None
         
         if title and price:
-            # Limpiar el precio (remover el símbolo "$" y convertir a float)
             price_text = price.text.strip().replace('$', '').replace(',', '')
             price_float = float(price_text) if price_text else 0
 
-            # Sumar un porcentaje al precio (ej: 10%)
-            porcentaje_aumento = 10
-            nuevo_precio = price_float + \
-                (price_float * porcentaje_aumento / 100)
+            porcentaje_aumento = 0
+            nuevo_precio = price_float + (price_float * porcentaje_aumento / 100)
             price = nuevo_precio * 1000
 
         if div_imagen:
@@ -116,7 +120,6 @@ def obtener_productos_puma():
             for article in productos_article:
                 imgs = article.find_all('img', class_="chakra-image css-0")
                 imagenes_producto.extend([img['src'] for img in imgs if 'src' in img.attrs])
-                       
 
         if title:
             resultado.append({
@@ -128,6 +131,12 @@ def obtener_productos_puma():
                 'imagenes_producto': imagenes_producto,
                 'link_href': link_href
             })
+
+    # Guardar los datos en la caché con el tiempo actual
+    cache['puma_data'] = {
+        'data': resultado,
+        'timestamp': time.time()
+    }
 
     return jsonify(resultado)
 

@@ -77,8 +77,13 @@ header {
     font-size: 1.2rem;
     color: #333;
 }
+.botonesDiv{
+    width: 90%;
+    margin: 16px auto;
+}
 
 .btn-pago {
+    width: 100%;
     background-color: #24963c;
     color: white;
     padding: 12px 25px;
@@ -90,6 +95,8 @@ header {
 }
 
 .btn-ver-imagenes {
+    width: 100%;
+
     background-color: #444;
     color: #ffffff;
     padding: 12px 25px;
@@ -102,6 +109,8 @@ header {
 }
 
 .btn-whatsapp {
+    width: 100%;
+
     background-color: #fefefe;
     color: #333;
     padding: 12px 25px;
@@ -245,9 +254,14 @@ header {
     #productos {
         justify-content: center;
     }
+    .modal-content h2{
+        margin-top: 0px;
+
+  }
      .modal-content {
         background-color: #eaeeef;; /* Color de fondo suave */
-        padding-bottom:40px;
+        padding: 32px;
+        padding-right: 0px;
         border-radius: 0px;
   }
 }

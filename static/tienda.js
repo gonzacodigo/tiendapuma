@@ -51,6 +51,9 @@ function getProductosHTML(productos) {
     let productoDiv = document.createElement("div");
     productoDiv.classList.add("producto");
 
+    let botonesDiv = document.createElement("div");
+    botonesDiv.classList.add("botonesDiv");
+
     let title = document.createElement("h2");
     title.textContent = producto.title;
 
@@ -64,8 +67,8 @@ function getProductosHTML(productos) {
     let priceOriginal = document.createElement("p");
     priceOriginal.innerHTML = `Precio Original: <del>${producto.price_original}</del>`;
 
-    let pricePorcentaje = document.createElement("p");
-    pricePorcentaje.textContent = `Descuento: ${producto.price_porcentaje}`;
+    let pricePorcentaje = document.createElement("b");
+    pricePorcentaje.textContent = `${producto.price_porcentaje}`;
 
     let imagenUrl = producto.img;
     if (imagenUrl) {
@@ -130,10 +133,21 @@ function getProductosHTML(productos) {
 
     productoDiv.appendChild(title);
     productoDiv.appendChild(price);
-    productoDiv.appendChild(priceOriginal);
-    productoDiv.appendChild(verImagenesButton);
-    productoDiv.appendChild(whatsappButton);
-    productoDiv.appendChild(pagarButton);
+    if (producto.price_original) {
+      let priceOriginal = document.createElement("p");
+      priceOriginal.innerHTML = `Precio Original: <del>${producto.price_original}</del>`;
+      productoDiv.appendChild(priceOriginal);
+    }
+
+    if (producto.price_porcentaje) {
+      let pricePorcentaje = document.createElement("p");
+      pricePorcentaje.textContent = `Descuento: ${producto.price_porcentaje}`;
+      productoDiv.appendChild(pricePorcentaje);
+    }
+    botonesDiv.appendChild(verImagenesButton);
+    botonesDiv.appendChild(whatsappButton);
+    botonesDiv.appendChild(pagarButton);
+    productoDiv.appendChild(botonesDiv);
 
     fragment.appendChild(productoDiv);
   });
