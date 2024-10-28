@@ -43,9 +43,9 @@ def crear_pago(precio):
                 }
             ],
             "back_urls": {
-                "success": "https://tiendaadidas.pythonanywhere.com/",
-                "failure": "https://tiendaadidas.pythonanywhere.com/",
-                "pending": ""
+                "success": "https://tiendapuma.onrender.com/",
+                "failure": "https://tiendapuma.onrender.com/",
+                "pending": "https://tiendapuma.onrender.com/"
             },
             "auto_return": "approved"
         }

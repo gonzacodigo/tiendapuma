@@ -138,7 +138,7 @@ function getProductosHTML(productos) {
     });
     // Botón para mostrar talles
     let acordeonButton = document.createElement("button");
-    acordeonButton.textContent = "Ver Talles";
+    acordeonButton.textContent = "TALLES DISPONIBLES";
     acordeonButton.classList.add("btn-acordeon");
 
     // Contenedor para los talles
@@ -146,18 +146,30 @@ function getProductosHTML(productos) {
     tallesDiv.classList.add("talles-content");
     tallesDiv.style.display = "none"; // Oculto por defecto
 
-    // Llenar los talles, asumiendo que los talles están en producto.talles
-    if (producto.talles && producto.talles.length > 0) {
-      producto.talles.forEach((talle) => {
+  // Llenar los talles, asumiendo que los talles están en producto.talles
+  if (producto.talles && producto.talles.length > 0) {
+    producto.talles.forEach((talle) => {
+      // Filtrar talles que no contengan la palabra "agotado"
+      if (!talle.toLowerCase().includes("agotado")) {
         let talleElement = document.createElement("p");
+        talleElement.classList.add("p_talles");
         talleElement.textContent = talle;
         tallesDiv.appendChild(talleElement);
-      });
-    } else {
+      }
+    });
+    
+    // Si después de filtrar no hay talles disponibles, mostrar mensaje
+    if (tallesDiv.childElementCount === 0) {
       let noTalles = document.createElement("p");
       noTalles.textContent = "No hay talles disponibles.";
       tallesDiv.appendChild(noTalles);
     }
+  } else {
+    let noTalles = document.createElement("p");
+    noTalles.textContent = "No hay talles disponibles.";
+    tallesDiv.appendChild(noTalles);
+  }
+
 
     // Toggle de acordeón
     acordeonButton.addEventListener("click", function () {
@@ -183,10 +195,11 @@ function getProductosHTML(productos) {
     }
     botonesDiv.appendChild(verImagenesButton);
     botonesDiv.appendChild(whatsappButton);
-    botonesDiv.appendChild(pagarButton);
     // Añadir los botones y el acordeón al div de botones
     botonesDiv.appendChild(acordeonButton); // Botón de talles dentro de botonesDiv
     botonesDiv.appendChild(tallesDiv); // Añadir el div de talles al botonesDiv
+    botonesDiv.appendChild(pagarButton);
+
 
     productoDiv.appendChild(botonesDiv);
 
